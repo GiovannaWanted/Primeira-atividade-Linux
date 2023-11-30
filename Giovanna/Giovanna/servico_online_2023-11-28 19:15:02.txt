@@ -1,0 +1,4 @@
+Data/Hora: 2023-11-28 19:15:02
+Nome do Serviço: Apache
+Status: active
+Mensagem: Online
