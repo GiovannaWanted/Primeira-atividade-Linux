@@ -27,24 +27,88 @@ No atual documento serão descritos todos os procedimentos executados para a rea
 
       CONECTE-SE A SUA INSTÂNCIA EC2 COM SUA KEY PAIR VIA SSH E SIGA PARA AS PRÓXIMAS INSTRUÇÕES.
 
+ OBS TODOS COMANDOS FORAM EXECUTADOS COM USUÁRIO ROOT
+
 2. Configuração do Ambiente Linux:
    2.1. Configuração do NFS:
    Instale o NFS no servidor EC2:
 
    "yum update"
 
-   "sudo yum install nfs-utils
+   "yum install nfs-utils
 
    "mkdir /nfs-compartilhado"
 
    "/home/nfs-compartilhado *(rw,sync,no_root_squash)"
 
-   "sudo systemctl restart nfs-server"
+   "systemctl restart nfs-server"
 
    "systemctl enable nfs-server"
 
 2.2. Configuração do Apache:
    Instale o Apache no servidor EC2:
+
+   "yum install httpd"
+
+   Inicie o serviço Apache:
+
+   "systemctl start httpd"
+
+   "systemctl enable httpd"
+
+2.3. Criação do Script de Verificação do Apache
+     Crie o script 
+
+  "check_apache_status.sh:"
+
+    Digite o script
+#!/bin/bash
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
+SERVICE_NAME="Apache"
+
+STATUS=$(systemctl is-active httpd)
+
+
+if [ "$STATUS" = "active" ]; then
+    MESSAGE="Online"
+    OUTPUT_FILE="/home/nfs-compartilhado/Giovanna/servico_online_${TIMESTAMP}.txt"
+else
+    MESSAGE="Offline"
+    OUTPUT_FILE="/home/nfs-compartilhado/Giovanna/servico_offline_${TIMESTAMP}.txt"
+fi
+
+echo "Data/Hora: ${TIMESTAMP}" >> "${OUTPUT_FILE}"
+echo "Nome do Serviço: ${SERVICE_NAME}" >> "${OUTPUT_FILE}"
+echo "Status: ${STATUS}" >> "${OUTPUT_FILE}"
+echo "Mensagem: ${MESSAGE}" >> "${OUTPUT_FILE}"
+
+   Para salvar as alterações do editor CTRL + O
+   Para sair do editor CTRL + X
+
+ Torne o script executável:
+
+ "chmod +x /home/nfs-compartilhado/Giovanna/check_apache_status.sh"
+
+2.4. Agendamento Automático do Script:
+
+    Agende a execução do script a cada 5 minutos usando o cron:
+
+    "crontab -e"
+
+     "*/5 * * * * /home/nfs-compartilhado/Giovanna/check_apache_status.sh"
+
+  Para sair do editor = ESC e digite ":wq"
+
+
+
+
+
+   
+     
+
+
+ 
 
 
 
