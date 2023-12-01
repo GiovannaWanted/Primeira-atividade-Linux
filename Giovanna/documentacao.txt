@@ -26,7 +26,33 @@ No atual documento serão descritos todos os procedimentos executados para a rea
       Lembre-se de deixar com acesso público ipv4 0.0.0.0/0.
 
       CONECTE-SE A SUA INSTÂNCIA EC2 COM SUA KEY PAIR VIA SSH E SIGA PARA AS PRÓXIMAS INSTRUÇÕES.
-      
+
+2. Configuração do Ambiente Linux:
+   2.1. Configuração do NFS:
+   Instale o NFS no servidor EC2:
+
+   "yum update"
+
+   "sudo yum install nfs-utils
+
+   "mkdir /nfs-compartilhado"
+
+   "/home/nfs-compartilhado *(rw,sync,no_root_squash)"
+
+   "sudo systemctl restart nfs-server"
+
+   "systemctl enable nfs-server"
+
+2.2. Configuração do Apache:
+   Instale o Apache no servidor EC2:
+
+
+
+    
+
+
+    
+
       
       
       
